@@ -84,7 +84,8 @@ while(1):
     cv2.imshow('result',gray)
     k = cv2.waitKey(10) & 0xFF
     if k == 27:
-        pickle.dump(gray,open("output.pic",'w'))
+        with open("output.pic",'w') as f:
+            pickle.dump(gray,f)
         break
 
 cv2.destroyAllWindows()
