@@ -49,8 +49,9 @@ def sendCommand(data):
         #new row
         if ((cur_x+1 == shape[1] and cur_y%2==0) or (cur_x == 0 and cur_y%2==1)) and not at_new_row: # go to new row
             cur_y += 1
-            ser.write("Y:1\n")
-            at_new_row = True
+            if cur_y < shape[0]:
+                ser.write("Y:1\n")
+                at_new_row = True
         else: # new x
             at_new_row = False
             if cur_y%2==0:
@@ -70,12 +71,11 @@ def doNothing(data):
 """
 commands = {'S':sendCommand, 'E':doNothing}
 
-while (True):
+while (cur_y < shape[0]):
     data = ser.read(size=1)
     commands.get(data,unknownCommand)(data)
     #print percent of work
     sys.stdout.write("\r%d%%" % 100.0*cur_y/shape[1] )
-    sys.stdout.flush()
 
 print "Done"
 time.sleep(4)
